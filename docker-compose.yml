@@ -1,0 +1,22 @@
+services:
+  nodeapp:
+    build:
+      context: .
+    container_name: calculator-app
+    ports:
+      - "5000:3000"
+    environment:
+      - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/calculator?authSource=admin
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:8.0.1-noble
+    container_name: calculator-app-mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db_mongo_new:/data/db
